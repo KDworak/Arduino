@@ -2,6 +2,10 @@
 #include <M5UnitENV.h>
 #include "SSVQueueStackArray.h"
 #include <arduino-timer.h>
+#include <WiFi.h>
+#include <PubSubClient.h>
+#include <ArduinoHttpClient.h>
+#include <ArduinoJson.h>
 
 struct TemperatureRecord {
   int temperature;
@@ -42,6 +46,8 @@ bool isgrafCo;
 bool isAlarm;
 bool isC02Alarm;
 bool isTempAlarm;
+bool isC02AlarmPrev;
+bool isTempAlarmPrev;
 bool timeout;
 
 Button add_MIN(0, 0, 0, 0, false, ">", off_clrs_PM, on_clrs_PM, MC_DATUM);
@@ -76,6 +82,23 @@ int16_t hw = M5.Lcd.width() / 2;
 int16_t hh = M5.Lcd.height() / 2;
 auto time_out = timer_create_default();
 auto Timer_autoshut = timer_create_default();
+
+WiFiClient espClient;
+PubSubClient client(espClient);
+
+
+const char* ssid        = "temp";
+const char* password    = "zaq1@WSX";
+//const char* ssid        = "Home@";
+//const char* password    = "Perkusja";
+const char* mqtt_server = "test.mosquitto.org";
+
+WiFiClient wifi;
+//HttpClient Hclient = HttpClient(wifi, "192.168.151.210", 3000);
+HttpClient Hclient = HttpClient(wifi, "192.168.1.111", 3000);
+
+#define MSG_BUFFER_SIZE (200)
+char msg[MSG_BUFFER_SIZE];
 
 void storeTemperatureData(int temperature) {
   M5.Rtc.GetTime(&RTCtime);  
@@ -245,6 +268,11 @@ void task1(void* pvParameters) {
   while (1) {  
       Temp =random(-10, 40);
       storeTemperatureData(Temp);
+      String  nsum = "{ \"idx\" : 2, \"nvalue\" : 0, \"svalue\" : \"";
+      nsum += Temp;
+      nsum += "\" }";
+      nsum.toCharArray(msg, MSG_BUFFER_SIZE); 
+      client.publish("KADW/in/temp",msg); 
       delay(
           5000);  
   }
@@ -270,6 +298,11 @@ void task2(void* pvParameters) {
       Co -=100;
     }
     storeCo2Data(Co);
+    String  nsum = "{ \"idx\" : 1, \"nvalue\" : 0, \"svalue\" : \"";
+    nsum += Co;
+    nsum += "\" }";
+    nsum.toCharArray(msg, MSG_BUFFER_SIZE); 
+    client.publish("KADW/in/co",msg); 
         delay(5000);
     }
     
@@ -279,6 +312,9 @@ bool timerCallback(void *argument) {
     M5.Axp.SetVibration(false); 
     Screen_num= 0;
           isAlarm = false;
+    String nsum = "Nothing wrong";
+      nsum.toCharArray(msg, MSG_BUFFER_SIZE);
+      client.publish("KADW/in/alarm", msg);       
     M5.Lcd.clear();
     return false;
           
@@ -297,8 +333,61 @@ void task3(void* pvParameters) {
     float avg = sum / count; 
     isC02Alarm =(Co > (float)max_Co)? true : false;
     isTempAlarm = (Temp >= max_T) ? true : false;
+    if(isTempAlarm && isTempAlarm != isTempAlarmPrev){
+      String nsum = "1";
+      isTempAlarmPrev =isTempAlarm;
+      nsum.toCharArray(msg, MSG_BUFFER_SIZE);
+      client.publish("KADW/in/alarm/t", msg); 
+    }if(!isTempAlarm && isTempAlarm != isTempAlarmPrev){
+      String nsum = "0";
+      isTempAlarmPrev =isTempAlarm;
+      nsum.toCharArray(msg, MSG_BUFFER_SIZE);
+      client.publish("KADW/in/alarm/t", msg); 
+    }
+    if(isC02Alarm && isC02Alarm != isC02AlarmPrev){
+      String nsum = "1";
+      isTempAlarmPrev = isC02Alarm;
+      nsum.toCharArray(msg, MSG_BUFFER_SIZE);
+      client.publish("KADW/in/alarm/c", msg); 
+    }if(!isTempAlarm && isTempAlarm != isTempAlarmPrev){
+      String nsum = "0";
+      isTempAlarmPrev = isC02Alarm;
+      nsum.toCharArray(msg, MSG_BUFFER_SIZE);
+      client.publish("KADW/in/alarm/c", msg); 
+    }
     if(avg > max_T && Co > (float)max_Co && !isAlarm && !timeout){
-      M5.Axp.SetVibration(true); 
+    M5.Axp.SetVibration(true); 
+    Hclient.get("/api/types");
+    int statusCode = Hclient.responseStatusCode();
+    String response = Hclient.responseBody();
+    StaticJsonDocument<512> doc; // Adjust the size based on your JSON response
+    DeserializationError error = deserializeJson(doc, response);
+    for (JsonObject fire : doc.as<JsonArray>()) {
+    
+      const char* typenameValue = fire["typename"];
+      
+      int temperatureMin = fire["degreeMIN"].as<int>();
+      int temperatureMax = fire["degreeMAX"].as<int>();
+      int co2 = fire["CO2Emission"].as<int>();
+    
+      int desiredTemperatureMin = 0; 
+      int desiredCO2 = 5; 
+    
+      if (temperatureMin < Temp && Temp < temperatureMax && co2 <= Co) {
+        
+        String nsum = "Fire probality found.\n\n\nName: ";
+        nsum += typenameValue;
+        nsum += ".\n\nTemperature : ";
+        nsum += temperatureMax;
+        nsum += "*C \n\n";
+        nsum += "CO2 procentage : ";
+        nsum += co2;
+        nsum += "%.";
+        nsum.toCharArray(msg, MSG_BUFFER_SIZE);
+        client.publish("KADW/in/alarm", msg); 
+        break;
+      }
+    }
       Screen_num= 404;
       isAlarm = true;
       time_out.in(90000,timerout);
@@ -760,65 +849,40 @@ void eventDisplay(Event& e) {
 void setup() {
     M5.begin(true, true, true, true, mbus_mode_t::kMBusModeOutput,
              true);  
-    Serial.begin(115200);
     
-    pinMode(36, INPUT);  
-    pinMode(26, INPUT);
-     if (!SD.begin()) {  
-        M5.Lcd.println(
-            "Card failed, or not present");  
-        while (1);
+    M5.Lcd.setCursor(10 , 10);
+   
+    setupWifi();
+    client.setServer(mqtt_server,1883);  
+    client.setCallback(callback); 
+     while (!client.connected()) {
+    M5.Lcd.print("Connecting to MQTT...");
+    if (client.connect("M5StackClient")) {
+      M5.Lcd.println("connected");
+      // Subscribe to topics (if needed)
+      client.subscribe("KADW/out/#");
+    } else {
+      M5.Lcd.print("failed, rc=");
+      M5.Lcd.print(client.state());
+      M5.Lcd.println(" try again in 5 seconds");
+      delay(5000);
     }
-    
-    //if (!sht3x.begin(&Wire, SHT3X_I2C_ADDR, 21, 22, 400000U)) {
-    //    Serial.println("Couldn't find SHT3X");
-    //    while (1) delay(1);
-    //}
-    lastdata= 0;
-    isgrafTemp = false;
-    isgrafCo = false;
-    timeout = false;
-    isAlarm = false;
-    isC02Alarm = false;
-    isTempAlarm = false;
-    hw = M5.Lcd.width() / 2;
-    hh = M5.Lcd.height() / 2;
-    RTCDate.Year  = 2022; 
-    RTCDate.Month = 1;
-    RTCDate.Date  = 9;
-    templast = 0;
-    min_T = 0.0;
-    max_T= 40.0;
-    min_Co = 200;
-    max_Co= 1200;
-    Co= 500;
-    M5.Buttons.addHandler(eventDisplay, E_ALL - E_MOVE);
-    doButtonsSettings();
-    doButtonsTC();
-    doButtonsDT();
-    Temp_CO_Btn_disenable();
-    Date_Time_Btn_disenable();
-    Sett_Btn_disenable();
-    M5.Lcd.clear();
-    xTaskCreatePinnedToCore(
-        task1,    
-                  
-        "task1",  
-        4096,     
-                  
-        NULL,    
-                  
-        1,        
-        NULL,     
-        0);
-    xTaskCreatePinnedToCore(task2, "task2", 4096, NULL, 2, NULL, 0);
-    xTaskCreatePinnedToCore(task3, "task3", 4096, NULL, 3, NULL, 0);
+  }
+  delay(7000);
+  M5.Lcd.clear();
+ 
+      M5.Lcd.println(" try again in 5 seconds");
+      setuptask();
+     M5.Lcd.clear();
     SCR_home();
   
 }
 void loop() {
   M5.update(); 
-
+  if (!client.connected()) {
+        reConnect();
+    }
+    client.loop();
   time_out.tick();
   Timer_autoshut.tick();
   switch (Screen_num) {
@@ -894,11 +958,161 @@ void loop() {
         Timer_autoshut.cancel();
         Screen_num = 0; 
         isAlarm = false; 
+        String nsum = "Nothing wrong";
+        nsum.toCharArray(msg, MSG_BUFFER_SIZE);
+        client.publish("KADW/in/alarm", msg); 
       }
   }
   
   
 }
+void setupWifi() {
+    delay(10);
+    M5.Lcd.printf("Connecting to %s", ssid);
+    WiFi.mode(
+        WIFI_STA);  
+    WiFi.begin(ssid, password);  
+
+    while (WiFi.status() != WL_CONNECTED) {
+        delay(500);
+        M5.Lcd.print(".");
+    }
+    M5.Lcd.printf("\nSuccess\n");
+}
+void callback(char* topic, byte* payload, unsigned int length) {
+    String payloadStr = "";
+    for (int i = 0; i < length; i++) {
+      payloadStr += (char)payload[i];
+    }
+    if(String(topic) == "KADW/out/temp/max"){ 
+      
+      max_T=payloadStr.toFloat();
+    }
+    if(String(topic) == "KADW/out/temp/min"){ 
+     
+      min_T=payloadStr.toFloat();
+    }
+    if(String(topic) == "KADW/out/co2/max"){ 
+     
+      max_Co=payloadStr.toInt();
+    }
+    if(String(topic) == "KADW/out/co2/min"){ 
+     
+      min_Co=payloadStr.toInt();
+    }
+    if(String(topic) == "KADW/out/Aquery/temp"){ 
+      String nsum = "Obecna temperatura: ";
+      nsum += Temp;
+      nsum += "c";
+      nsum.toCharArray(msg, MSG_BUFFER_SIZE);
+      client.publish("KADW/Responce/t", msg); 
+    }
+    if(String(topic) == "KADW/out/Aquery/co2"){ 
+      String nsum = " Obecna zawartość co2 w czasteczkach: ";
+      nsum += Co;
+      nsum += "ppm";
+      nsum.toCharArray(msg, MSG_BUFFER_SIZE);
+      client.publish("KADW/Responce/c", msg); 
+    }
+    if(String(topic) == "KADW/out/Aquery/all"){ 
+      String nsum = "Obecna temperatura: ";
+      nsum += Temp;
+      nsum += "C Obecna zawartość co2 w czasteczkach: ";
+      nsum += Co;
+      nsum += "ppm";
+      nsum.toCharArray(msg, MSG_BUFFER_SIZE);
+      client.publish("KADW/Responce/A", msg); 
+    }
+    if(String(topic) == "KADW/out/Aquery/temp/HIGH"){ 
+      String nsum = "{ Limit temperatury ustawiony jest na :";
+      nsum += max_T;
+      nsum += "C";
+      nsum.toCharArray(msg, MSG_BUFFER_SIZE);
+      client.publish("KADW/Responce/tH", msg); 
+    }
+    if(String(topic) == "KADW/out/Aquery/co2/HIGH"){ 
+      String nsum = "{ Limit Dwutlenkuwegla ustawiony jest na :";
+      nsum += max_Co;
+      nsum += "ppm";
+      nsum.toCharArray(msg, MSG_BUFFER_SIZE);
+      client.publish("KADW/Responce/cH", msg); 
+    }
+}
+void reConnect() {
+    while (!client.connected()) {
+       // M5.Lcd.print("Attempting MQTT connection...");
+        String clientId = "M5Stack-";
+        clientId += String(random(0xffff), HEX);
+        if (client.connect(clientId.c_str())) {
+          //  M5.Lcd.printf("\nSuccess\n");
+            client.publish("M5Stack", "hello world");
+            client.subscribe("KADW/out/#");
+        } else {
+          //  M5.Lcd.print("failed, rc=");
+           // M5.Lcd.print(client.state());
+          //  M5.Lcd.println("try again in 5 seconds");
+            delay(5000);
+        }
+    }
+}
+
+void setuptask() {
+    delay(7000);
+    
+    pinMode(36, INPUT);  
+    pinMode(26, INPUT);
+     if (!SD.begin()) {  
+        M5.Lcd.println(
+            "Card failed, or not present");  
+        while (1);
+    }
+    
+    //if (!sht3x.begin(&Wire, SHT3X_I2C_ADDR, 21, 22, 400000U)) {
+    //    Serial.println("Couldn't find SHT3X");
+    //    while (1) delay(1);
+    //}
+    lastdata= 0;
+    isgrafTemp = false;
+    isgrafCo = false;
+    timeout = false;
+    isAlarm = false;
+    isC02Alarm = false;
+    isTempAlarm = false;
+    hw = M5.Lcd.width() / 2;
+    hh = M5.Lcd.height() / 2;
+    RTCDate.Year  = 2022; 
+    RTCDate.Month = 1;
+    RTCDate.Date  = 9;
+    templast = 0;
+    min_T = 0.0;
+    max_T= 40.0;
+    min_Co = 200;
+    max_Co= 1200;
+    Co= 500;
+    M5.Buttons.addHandler(eventDisplay, E_ALL - E_MOVE);
+    doButtonsSettings();
+    doButtonsTC();
+    doButtonsDT();
+    Temp_CO_Btn_disenable();
+    Date_Time_Btn_disenable();
+    Sett_Btn_disenable();
+    M5.Lcd.clear();
+    xTaskCreatePinnedToCore(
+        task1,    
+                  
+        "task1",  
+        4096,     
+                  
+        NULL,    
+                  
+        1,        
+        NULL,     
+        0);
+    xTaskCreatePinnedToCore(task2, "task2", 4096, NULL, 2, NULL, 0);
+    xTaskCreatePinnedToCore(task3, "task3", 4096, NULL, 3, NULL, 0);
+    
+}
+
 
 
 
