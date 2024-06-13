@@ -1,0 +1,1367 @@
+[
+    {
+        "id": "e4b4d473fc20be0d",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "0c7bdce4511a7333",
+        "type": "mqtt out",
+        "z": "e4b4d473fc20be0d",
+        "name": "",
+        "topic": "KADW/out/temp/min",
+        "qos": "0",
+        "retain": "true",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "70e02f88a03f4066",
+        "x": 560,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "69d773b5d4e80450",
+        "type": "ui_slider",
+        "z": "e4b4d473fc20be0d",
+        "name": "",
+        "label": "Min Temp",
+        "tooltip": "",
+        "group": "713923652853878c",
+        "order": 1,
+        "width": 6,
+        "height": 1,
+        "passthru": true,
+        "outs": "end",
+        "topic": "topic",
+        "topicType": "msg",
+        "min": "-10",
+        "max": "20",
+        "step": "0.5",
+        "className": "",
+        "x": 140,
+        "y": 400,
+        "wires": [
+            [
+                "0c7bdce4511a7333"
+            ]
+        ]
+    },
+    {
+        "id": "700caf955ec85200",
+        "type": "ui_slider",
+        "z": "e4b4d473fc20be0d",
+        "name": "",
+        "label": "Max Temp",
+        "tooltip": "",
+        "group": "713923652853878c",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "outs": "end",
+        "topic": "topic",
+        "topicType": "msg",
+        "min": "20.5",
+        "max": "60",
+        "step": "0.5",
+        "className": "",
+        "x": 150,
+        "y": 480,
+        "wires": [
+            [
+                "b8f4834524153bc1",
+                "266481cd98a9d8ba"
+            ]
+        ]
+    },
+    {
+        "id": "d80aa685de8b7c5d",
+        "type": "ui_slider",
+        "z": "e4b4d473fc20be0d",
+        "name": "",
+        "label": "Min CO2",
+        "tooltip": "",
+        "group": "b2314350e23a3c36",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "outs": "end",
+        "topic": "topic",
+        "topicType": "msg",
+        "min": "200",
+        "max": "1000",
+        "step": "10",
+        "className": "",
+        "x": 140,
+        "y": 580,
+        "wires": [
+            [
+                "07da96d85d46ef64"
+            ]
+        ]
+    },
+    {
+        "id": "4dc5b993d906bb38",
+        "type": "ui_slider",
+        "z": "e4b4d473fc20be0d",
+        "name": "",
+        "label": "Max CO2",
+        "tooltip": "",
+        "group": "b2314350e23a3c36",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "outs": "end",
+        "topic": "topic",
+        "topicType": "msg",
+        "min": "1010",
+        "max": "2000",
+        "step": "10",
+        "className": "",
+        "x": 140,
+        "y": 660,
+        "wires": [
+            [
+                "c3a0f7d336efda54",
+                "1495381465e18fec"
+            ]
+        ]
+    },
+    {
+        "id": "b8f4834524153bc1",
+        "type": "mqtt out",
+        "z": "e4b4d473fc20be0d",
+        "name": "",
+        "topic": "KADW/out/temp/max",
+        "qos": "0",
+        "retain": "true",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "70e02f88a03f4066",
+        "x": 560,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "07da96d85d46ef64",
+        "type": "mqtt out",
+        "z": "e4b4d473fc20be0d",
+        "name": "",
+        "topic": "KADW/out/co2/min",
+        "qos": "0",
+        "retain": "true",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "70e02f88a03f4066",
+        "x": 550,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "c3a0f7d336efda54",
+        "type": "mqtt out",
+        "z": "e4b4d473fc20be0d",
+        "name": "",
+        "topic": "KADW/out/co2/max",
+        "qos": "0",
+        "retain": "true",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "70e02f88a03f4066",
+        "x": 550,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "dbacbdf01e0b31f7",
+        "type": "mqtt in",
+        "z": "e4b4d473fc20be0d",
+        "name": "",
+        "topic": "KADW/in/temp",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "70e02f88a03f4066",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 180,
+        "y": 820,
+        "wires": [
+            [
+                "3ea034ae22d0568b",
+                "71ed30e343d8cf25"
+            ]
+        ]
+    },
+    {
+        "id": "6efe163a03457cdd",
+        "type": "mqtt in",
+        "z": "e4b4d473fc20be0d",
+        "name": "",
+        "topic": "KADW/in/co",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "70e02f88a03f4066",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 150,
+        "y": 1020,
+        "wires": [
+            [
+                "139687acfa123878",
+                "b81386207026ecc5"
+            ]
+        ]
+    },
+    {
+        "id": "c0dea5e128a6e359",
+        "type": "file",
+        "z": "e4b4d473fc20be0d",
+        "name": "dataw",
+        "filename": "C:/Users/kacpe/Desktop/data/dataw.csv",
+        "filenameType": "str",
+        "appendNewline": false,
+        "createDir": true,
+        "overwriteFile": "false",
+        "encoding": "utf8",
+        "x": 650,
+        "y": 1020,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "57b5e59e8798d081",
+        "type": "csv",
+        "z": "e4b4d473fc20be0d",
+        "name": "data",
+        "sep": ",",
+        "hdrin": "",
+        "hdrout": "none",
+        "multi": "one",
+        "ret": "\\r\\n",
+        "temp": "Time,Temp",
+        "skip": "0",
+        "strings": true,
+        "include_empty_strings": "",
+        "include_null_values": "",
+        "x": 510,
+        "y": 1020,
+        "wires": [
+            [
+                "c0dea5e128a6e359"
+            ]
+        ]
+    },
+    {
+        "id": "139687acfa123878",
+        "type": "function",
+        "z": "e4b4d473fc20be0d",
+        "name": "function 2",
+        "func": "var time = flow.get('timedata');\nvar co = msg.payload.svalue;\nvar m = { 'Time': time, 'CO2': co };\nreturn {payload:m};",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 1020,
+        "wires": [
+            [
+                "57b5e59e8798d081"
+            ]
+        ]
+    },
+    {
+        "id": "8ecc1ae5edc2df71",
+        "type": "mqtt in",
+        "z": "e4b4d473fc20be0d",
+        "name": "",
+        "topic": "KADW/Responce/#",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "70e02f88a03f4066",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 170,
+        "y": 280,
+        "wires": [
+            [
+                "d0018a86ca31226d"
+            ]
+        ]
+    },
+    {
+        "id": "d0018a86ca31226d",
+        "type": "debug",
+        "z": "e4b4d473fc20be0d",
+        "name": "debug 10",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 520,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "266481cd98a9d8ba",
+        "type": "change",
+        "z": "e4b4d473fc20be0d",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "mT",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 310,
+        "y": 520,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b195259c5178cdc0",
+        "type": "ui_artlessgauge",
+        "z": "e4b4d473fc20be0d",
+        "group": "c4795f98fc8bb18c",
+        "order": 2,
+        "width": 7,
+        "height": 7,
+        "name": "",
+        "icon": "fa-thermometer-half",
+        "label": "Temperature",
+        "unit": "*C",
+        "layout": "radial",
+        "decimals": 0,
+        "differential": false,
+        "minmax": true,
+        "colorTrack": "#404040",
+        "style": "5,2",
+        "colorFromTheme": true,
+        "property": "payload",
+        "secondary": "secondary",
+        "inline": true,
+        "animate": true,
+        "sectors": [
+            {
+                "val": -10,
+                "col": "#00ffee",
+                "t": "min",
+                "dot": 0
+            },
+            {
+                "val": 0,
+                "col": "#00ff33",
+                "t": "sec",
+                "dot": 4
+            },
+            {
+                "val": 20,
+                "col": "#ffea00",
+                "t": "sec",
+                "dot": 4
+            },
+            {
+                "val": 35,
+                "col": "#ff0000",
+                "t": "sec",
+                "dot": 4
+            },
+            {
+                "val": 60,
+                "col": "#ff0000",
+                "t": "max",
+                "dot": 2
+            }
+        ],
+        "lineWidth": "11",
+        "bgcolorFromTheme": false,
+        "diffCenter": "",
+        "x": 640,
+        "y": 860,
+        "wires": []
+    },
+    {
+        "id": "4d1e1c0adaadad3a",
+        "type": "function",
+        "z": "e4b4d473fc20be0d",
+        "name": "function 4",
+        "func": "\nvar msg1 = {};\nmsg1.payload = flow.get(\"mT\");;\nmsg1.topic = '';\nmsg.topic = 't';\nreturn [msg, msg1];",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 600,
+        "y": 900,
+        "wires": [
+            [
+                "afbcd85e4135c09a",
+                "a405ca0f01f61cab"
+            ],
+            [
+                "afbcd85e4135c09a",
+                "a405ca0f01f61cab"
+            ]
+        ]
+    },
+    {
+        "id": "afbcd85e4135c09a",
+        "type": "ui_chart",
+        "z": "e4b4d473fc20be0d",
+        "name": "",
+        "group": "e6047513897310af",
+        "order": 1,
+        "width": 14,
+        "height": 4,
+        "label": "Temperature current 50 sec",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": true,
+        "ymin": "-10",
+        "ymax": "60",
+        "removeOlder": "50",
+        "removeOlderPoints": "10",
+        "removeOlderUnit": "1",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": true,
+        "colors": [
+            "#ff9999",
+            "#00c771",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 820,
+        "y": 940,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a405ca0f01f61cab",
+        "type": "ui_chart",
+        "z": "e4b4d473fc20be0d",
+        "name": "",
+        "group": "e6047513897310af",
+        "order": 2,
+        "width": 14,
+        "height": 4,
+        "label": "Temperature last 3 weeks",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "bezier",
+        "nodata": "",
+        "dot": false,
+        "ymin": "-10",
+        "ymax": "60",
+        "removeOlder": "3",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "604800",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": true,
+        "colors": [
+            "#ff9999",
+            "#00c771",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 810,
+        "y": 900,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3ea034ae22d0568b",
+        "type": "change",
+        "z": "e4b4d473fc20be0d",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "$number(payload.svalue)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 420,
+        "y": 860,
+        "wires": [
+            [
+                "4d1e1c0adaadad3a",
+                "b195259c5178cdc0"
+            ]
+        ]
+    },
+    {
+        "id": "1495381465e18fec",
+        "type": "change",
+        "z": "e4b4d473fc20be0d",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "mC",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 290,
+        "y": 700,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "2b6d3ee3602e61e3",
+        "type": "function",
+        "z": "e4b4d473fc20be0d",
+        "name": "function 5",
+        "func": "\nvar msg1 = {};\nmsg1.payload = flow.get(\"mC\");;\nmsg1.topic = '';\nmsg.topic = 't';\nreturn [msg, msg1];",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 580,
+        "y": 1100,
+        "wires": [
+            [
+                "43db77cb9e92ad59",
+                "1beccbe8ca1317cd"
+            ],
+            [
+                "43db77cb9e92ad59",
+                "1beccbe8ca1317cd"
+            ]
+        ]
+    },
+    {
+        "id": "43db77cb9e92ad59",
+        "type": "ui_chart",
+        "z": "e4b4d473fc20be0d",
+        "name": "",
+        "group": "2685bfe05a7f08cf",
+        "order": 1,
+        "width": "14",
+        "height": "4",
+        "label": "CO2 current 50 sec",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": true,
+        "ymin": "200",
+        "ymax": "2000",
+        "removeOlder": "50",
+        "removeOlderPoints": "10",
+        "removeOlderUnit": "1",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": true,
+        "colors": [
+            "#ffffff",
+            "#9d4dff",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 810,
+        "y": 1140,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1beccbe8ca1317cd",
+        "type": "ui_chart",
+        "z": "e4b4d473fc20be0d",
+        "name": "",
+        "group": "2685bfe05a7f08cf",
+        "order": 1,
+        "width": "14",
+        "height": "4",
+        "label": "CO2 last 3 weeks",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "bezier",
+        "nodata": "",
+        "dot": false,
+        "ymin": "200",
+        "ymax": "2000",
+        "removeOlder": "3",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "604800",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": true,
+        "colors": [
+            "#ffffff",
+            "#3874ff",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 810,
+        "y": 1100,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b81386207026ecc5",
+        "type": "change",
+        "z": "e4b4d473fc20be0d",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "$number(payload.svalue)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 380,
+        "y": 1060,
+        "wires": [
+            [
+                "2b6d3ee3602e61e3",
+                "53eea7fa3c036f9d"
+            ]
+        ]
+    },
+    {
+        "id": "928b3960c4d58f35",
+        "type": "ui_artlessgauge",
+        "z": "e4b4d473fc20be0d",
+        "group": "c4795f98fc8bb18c",
+        "order": 1,
+        "width": 7,
+        "height": 7,
+        "name": "",
+        "icon": "fa-fire",
+        "label": "CarbonDioxite",
+        "unit": "%",
+        "layout": "radial",
+        "decimals": 0,
+        "differential": false,
+        "minmax": true,
+        "colorTrack": "#404040",
+        "style": "5,2",
+        "colorFromTheme": true,
+        "property": "payload",
+        "secondary": "secondary",
+        "inline": true,
+        "animate": true,
+        "sectors": [
+            {
+                "val": 0,
+                "col": "#ffffff",
+                "t": "min",
+                "dot": 0
+            },
+            {
+                "val": 100,
+                "col": "#ffffff",
+                "t": "max",
+                "dot": 2
+            }
+        ],
+        "lineWidth": "11",
+        "bgcolorFromTheme": false,
+        "diffCenter": "",
+        "x": 1000,
+        "y": 1060,
+        "wires": []
+    },
+    {
+        "id": "53eea7fa3c036f9d",
+        "type": "range",
+        "z": "e4b4d473fc20be0d",
+        "minin": "200",
+        "maxin": "2000",
+        "minout": "0",
+        "maxout": "100",
+        "action": "scale",
+        "round": false,
+        "property": "payload",
+        "name": "",
+        "x": 580,
+        "y": 1060,
+        "wires": [
+            [
+                "80bddb4a68b4d5d1"
+            ]
+        ]
+    },
+    {
+        "id": "80bddb4a68b4d5d1",
+        "type": "calculator",
+        "z": "e4b4d473fc20be0d",
+        "name": "",
+        "inputMsgField": "payload",
+        "outputMsgField": "payload",
+        "operation": "rdec",
+        "constant": "2",
+        "round": false,
+        "truncate": false,
+        "decimals": "0",
+        "decimals2": 0,
+        "x": 780,
+        "y": 1060,
+        "wires": [
+            [
+                "928b3960c4d58f35"
+            ]
+        ]
+    },
+    {
+        "id": "01a54ce8e2cf8ad5",
+        "type": "ui_text",
+        "z": "e4b4d473fc20be0d",
+        "group": "c4795f98fc8bb18c",
+        "order": 3,
+        "width": 4,
+        "height": 4,
+        "name": "",
+        "label": "General status",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "style": true,
+        "font": "Arial,Arial,Helvetica,sans-serif",
+        "fontSize": 16,
+        "color": "#ffffff",
+        "x": 360,
+        "y": 1240,
+        "wires": []
+    },
+    {
+        "id": "6b95ca02e327b837",
+        "type": "mqtt in",
+        "z": "e4b4d473fc20be0d",
+        "name": "",
+        "topic": "KADW/in/alarm",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "70e02f88a03f4066",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 160,
+        "y": 1240,
+        "wires": [
+            [
+                "01a54ce8e2cf8ad5",
+                "9e801fc80a839d51"
+            ]
+        ]
+    },
+    {
+        "id": "076e072722a94baf",
+        "type": "ui_toast",
+        "z": "e4b4d473fc20be0d",
+        "position": "dialog",
+        "displayTime": "5",
+        "highlight": "",
+        "sendall": true,
+        "outputs": 1,
+        "ok": "OK",
+        "cancel": "Cancel",
+        "raw": false,
+        "className": "",
+        "topic": "",
+        "name": "ss",
+        "x": 590,
+        "y": 1280,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c60ba06035d05dc4",
+        "type": "mqtt in",
+        "z": "e4b4d473fc20be0d",
+        "name": "",
+        "topic": "KADW/in/alarm/t",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "70e02f88a03f4066",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 1400,
+        "wires": [
+            [
+                "812b35b79dd66f8a"
+            ]
+        ]
+    },
+    {
+        "id": "6dbd52b99b9326db",
+        "type": "mqtt in",
+        "z": "e4b4d473fc20be0d",
+        "name": "",
+        "topic": "KADW/in/alarm/c",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "70e02f88a03f4066",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 1580,
+        "wires": [
+            [
+                "b0ff97538db227eb"
+            ]
+        ]
+    },
+    {
+        "id": "a8700f4c765a0fc2",
+        "type": "ui_text",
+        "z": "e4b4d473fc20be0d",
+        "group": "c4795f98fc8bb18c",
+        "order": 4,
+        "width": 4,
+        "height": 4,
+        "name": "",
+        "label": "Temperature status:",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "style": true,
+        "font": "Arial,Arial,Helvetica,sans-serif",
+        "fontSize": 16,
+        "color": "#ff9e9e",
+        "x": 640,
+        "y": 1400,
+        "wires": []
+    },
+    {
+        "id": "a1c6f5f13c278010",
+        "type": "ui_text",
+        "z": "e4b4d473fc20be0d",
+        "group": "c4795f98fc8bb18c",
+        "order": 5,
+        "width": 4,
+        "height": 4,
+        "name": "",
+        "label": "Co2 status:",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "style": true,
+        "font": "Arial,Arial,Helvetica,sans-serif",
+        "fontSize": 16,
+        "color": "#7baac1",
+        "x": 610,
+        "y": 1580,
+        "wires": []
+    },
+    {
+        "id": "812b35b79dd66f8a",
+        "type": "switch",
+        "z": "e4b4d473fc20be0d",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "neq",
+                "v": "1",
+                "vt": "num"
+            },
+            {
+                "t": "eq",
+                "v": "1",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 290,
+        "y": 1400,
+        "wires": [
+            [
+                "5ae809c3c642899c"
+            ],
+            [
+                "0d3887f6c892b6e6"
+            ]
+        ]
+    },
+    {
+        "id": "5ae809c3c642899c",
+        "type": "template",
+        "z": "e4b4d473fc20be0d",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "plain",
+        "template": "Temprerature normal",
+        "output": "str",
+        "x": 440,
+        "y": 1360,
+        "wires": [
+            [
+                "a8700f4c765a0fc2"
+            ]
+        ]
+    },
+    {
+        "id": "0d3887f6c892b6e6",
+        "type": "template",
+        "z": "e4b4d473fc20be0d",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "plain",
+        "template": "Temprerature over limit",
+        "output": "str",
+        "x": 440,
+        "y": 1440,
+        "wires": [
+            [
+                "a8700f4c765a0fc2"
+            ]
+        ]
+    },
+    {
+        "id": "b0ff97538db227eb",
+        "type": "switch",
+        "z": "e4b4d473fc20be0d",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "neq",
+                "v": "1",
+                "vt": "num"
+            },
+            {
+                "t": "eq",
+                "v": "1",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 290,
+        "y": 1580,
+        "wires": [
+            [
+                "e13809ba75d48b34"
+            ],
+            [
+                "95804b75c57a420b"
+            ]
+        ]
+    },
+    {
+        "id": "e13809ba75d48b34",
+        "type": "template",
+        "z": "e4b4d473fc20be0d",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "plain",
+        "template": "Co2 normal",
+        "output": "str",
+        "x": 440,
+        "y": 1540,
+        "wires": [
+            [
+                "a1c6f5f13c278010"
+            ]
+        ]
+    },
+    {
+        "id": "95804b75c57a420b",
+        "type": "template",
+        "z": "e4b4d473fc20be0d",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "plain",
+        "template": "Co2 over limit",
+        "output": "str",
+        "x": 440,
+        "y": 1620,
+        "wires": [
+            [
+                "a1c6f5f13c278010"
+            ]
+        ]
+    },
+    {
+        "id": "9e801fc80a839d51",
+        "type": "switch",
+        "z": "e4b4d473fc20be0d",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "neq",
+                "v": "Nothing wrong",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 330,
+        "y": 1280,
+        "wires": [
+            [
+                "0a4d1134ba55bbbb"
+            ]
+        ]
+    },
+    {
+        "id": "0a4d1134ba55bbbb",
+        "type": "template",
+        "z": "e4b4d473fc20be0d",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "plain",
+        "template": "There is a warning of \n   high fire risk.",
+        "output": "str",
+        "x": 460,
+        "y": 1280,
+        "wires": [
+            [
+                "076e072722a94baf"
+            ]
+        ]
+    },
+    {
+        "id": "71ed30e343d8cf25",
+        "type": "function",
+        "z": "e4b4d473fc20be0d",
+        "name": "function 6",
+        "func": "var time = flow.get('timedata');\nvar temp = msg.payload.svalue;\nvar m = { 'Time': time, 'Temp': temp};\nreturn {payload:m};",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 400,
+        "y": 820,
+        "wires": [
+            [
+                "30d395c211b8a12b"
+            ]
+        ]
+    },
+    {
+        "id": "437f59900e669c8d",
+        "type": "file",
+        "z": "e4b4d473fc20be0d",
+        "name": "dataw",
+        "filename": "C:/Users/kacpe/Desktop/data/dataw.csv",
+        "filenameType": "str",
+        "appendNewline": false,
+        "createDir": true,
+        "overwriteFile": "false",
+        "encoding": "utf8",
+        "x": 710,
+        "y": 820,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "30d395c211b8a12b",
+        "type": "csv",
+        "z": "e4b4d473fc20be0d",
+        "name": "data",
+        "sep": ",",
+        "hdrin": "",
+        "hdrout": "none",
+        "multi": "one",
+        "ret": "\\r\\n",
+        "temp": "Time,Temp",
+        "skip": "0",
+        "strings": true,
+        "include_empty_strings": "",
+        "include_null_values": "",
+        "x": 590,
+        "y": 820,
+        "wires": [
+            [
+                "437f59900e669c8d"
+            ]
+        ]
+    },
+    {
+        "id": "3315135262de31b1",
+        "type": "ui_spacer",
+        "z": "e4b4d473fc20be0d",
+        "name": "spacer",
+        "group": "ec32a74f32b161fe",
+        "order": 2,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "8f2c5cd4f7771008",
+        "type": "ui_spacer",
+        "z": "e4b4d473fc20be0d",
+        "name": "spacer",
+        "group": "c4795f98fc8bb18c",
+        "order": 6,
+        "width": 2,
+        "height": 1
+    },
+    {
+        "id": "a44eae7958946776",
+        "type": "ui_spacer",
+        "z": "e4b4d473fc20be0d",
+        "name": "spacer",
+        "group": "c4795f98fc8bb18c",
+        "order": 7,
+        "width": 2,
+        "height": 1
+    },
+    {
+        "id": "eceff20d1f8fcf3f",
+        "type": "ui_spacer",
+        "z": "e4b4d473fc20be0d",
+        "name": "spacer",
+        "group": "c4795f98fc8bb18c",
+        "order": 8,
+        "width": 2,
+        "height": 1
+    },
+    {
+        "id": "345326a9be65e733",
+        "type": "ui_spacer",
+        "z": "e4b4d473fc20be0d",
+        "name": "spacer",
+        "group": "c4795f98fc8bb18c",
+        "order": 9,
+        "width": 2,
+        "height": 1
+    },
+    {
+        "id": "70e02f88a03f4066",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "test.mosquitto.org",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "713923652853878c",
+        "type": "ui_group",
+        "name": "Settings",
+        "tab": "7cb15f7829384a0c",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": true,
+        "className": ""
+    },
+    {
+        "id": "b2314350e23a3c36",
+        "type": "ui_group",
+        "name": "Settings",
+        "tab": "742b2eb28cc8f812",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": true,
+        "className": ""
+    },
+    {
+        "id": "c4795f98fc8bb18c",
+        "type": "ui_group",
+        "name": "Default",
+        "tab": "d1fa096325a4f14f",
+        "order": 1,
+        "disp": false,
+        "width": 14,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "e6047513897310af",
+        "type": "ui_group",
+        "name": "Gauge",
+        "tab": "7cb15f7829384a0c",
+        "order": 1,
+        "disp": true,
+        "width": "14",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "2685bfe05a7f08cf",
+        "type": "ui_group",
+        "name": "Gauge",
+        "tab": "742b2eb28cc8f812",
+        "order": 1,
+        "disp": true,
+        "width": "14",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "7cb15f7829384a0c",
+        "type": "ui_tab",
+        "name": "Temp",
+        "icon": "fa-thermometer-half",
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "742b2eb28cc8f812",
+        "type": "ui_tab",
+        "name": "CO2",
+        "icon": "CO2",
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "d1fa096325a4f14f",
+        "type": "ui_tab",
+        "name": "Home",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]
